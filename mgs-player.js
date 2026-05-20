@@ -61,17 +61,23 @@ var imgEls = codecEl.querySelectorAll('img.img-left, img.img-right');
 
 	function triggerClick() {
 		// advance dialogue to next note
-		if (current_note < notesEls.length) {
-			fadeIn(notesEls[current_note], 200);
+        if (current_note < notesEls.length) {
+            fadeIn(notesEls[current_note], 200);
 
-			// hide previous notes
-			for (var i = 0; i < current_note; i++) {
-				fadeOut(notesEls[i], 100);
-			}
+            // hide previous notes
+            for (var i = 0; i < current_note; i++) {
+                fadeOut(notesEls[i], 100);
+            }
 
-			// increment forward
-			current_note += 1;
-		}
+            // increment forward
+            current_note += 1;
+
+            // If we just showed the last note, dispatch an event
+            if (current_note === notesEls.length) {
+                var event = new CustomEvent('codecthislastaudio');
+                codecEl.dispatchEvent(event);
+            }
+        }
 	}
 
 	function animateCodecBar() {

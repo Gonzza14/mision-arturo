@@ -201,7 +201,7 @@
       }
 
        .intro-prompt {
-         margin-top: 40px;
+         margin-top: 20px;
          color: #a6d7b2;
          font-size: 40px;
          letter-spacing: 4px;
@@ -565,8 +565,30 @@
           bottom: 5px;
           left: 15px;
         }
-      }
-    </style>
+       }
+
+       #returnBtn {
+         margin-top: 0px;
+         padding: 20px 40px;
+         font-size: 24px;
+         background-color: #a6d7b2;
+         color: #091a17;
+         border: none;
+         border-radius: 0;
+         font-weight: bold;
+         letter-spacing: 1px;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+       }
+
+       #returnBtn:hover {
+         background-color: #091a17;
+         color: #a6d7b2;
+         box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+         transform: translateY(-2px);
+       }
+     </style>
   </head>
   <body>
     <div class="intro-overlay" id="introOverlay">
@@ -577,15 +599,28 @@
        </div>
     </div>
 
+     <div class="intro-overlay hidden" id="birthdayOverlay">
+       <div class="intro-content">
+         <p class="intro-mission">¡FELIZ CUMPLEAÑOS, ARTURO!</p>
+         <p class="intro-date">CELEBRAMOS EN EL PARQUE BICENTENARIO</p>
+         <p class="intro-prompt">30/05/2026 - 10:00</p>
+         <button id="returnBtn">Regresar</button>
+       </div>
+     </div>
+
     <div class="call-screen hidden" id="callScreen"></div>
 
-    <audio id="codec-audio" style="display: none" loop preload="auto">
-      <source src="codec.mp3" type="audio/mpeg" />
-    </audio>
+     <audio id="codec-audio" style="display: none" loop preload="auto">
+       <source src="codec.mp3" type="audio/mpeg" />
+     </audio>
 
-    <audio id="codec-open-ringtone" style="display: none" preload="auto">
-      <source src="mgs-codec-open-ringtone.mp3" type="audio/mpeg" />
-    </audio>
+     <audio id="codec-open-ringtone" style="display: none" preload="auto">
+       <source src="mgs-codec-open-ringtone.mp3" type="audio/mpeg" />
+     </audio>
+
+     <audio id="birthday-audio" style="display: none" preload="auto">
+       <source src="metal-gear-solid-3.mp3" type="audio/mpeg" />
+     </audio>
 
     <div class="orientation-warning" id="orientationWarning">
       <div class="rotate-icon">
@@ -613,7 +648,7 @@
         <div class="actor-overlay img-left"></div>
         <img src="fuzzy.gif" class="left-cover" alt="fuzzy animation" />
         <img
-          src="kaz.webp"
+          src="Kaz.webp"
           alt="actor 1"
           class="img-left"
         />
@@ -622,19 +657,19 @@
 				<img src="metal-gear-solid-delta-radio-header.avif" alt="Snake" class="img-right">
 
         <div class="transcription">
-          <p><strong>Miller:</strong> Snake, tengo aquí el informe final del pelot&oacute;n que se desplegar&aacute; para rescatar a Arturo que tiene informacion importante para el desarrollo de una mejor caja de carton.</p>
-          <p><strong>Snake:</strong> Mmmm...</p>
-					<p><strong>Snake:</strong> ¿D&oacute;nde lo tienen retenido?</p>
-					<p><strong>Miller:</strong> En unas instalaciones de m&aacute;xima seguridad en el Parque Bicentenario. Las coordenadas de inserci&oacute;n ya est&aacute;n en tu radar, pero la vigilancia es extrema.</p>
-					<p><strong>Snake:</strong> ¿Quienes van? </p>
-          <p> <strong>Miller:</strong> Liderar&aacute; la unidad Valeria. Le acompa&ntilde;an Camila, Chipi y Carlitos.</p>
-          <p><strong>Snake:</strong> Valeria conoce el terreno, lo acepto. ¿Alguna novedad en el grupo?</p>
-          <p><strong>Miller:</strong> Dos operarios m&aacute;s se suman al equipo: Alejandra y Gonzalo</p>
-          <p><strong>Snake:</strong> Seis en total. Necesito garantizar que no haya filtraciones ni errores de comunicaci&oacute;n.</p>
-          <p><strong>Miller:</strong> Est&aacute;n revisando cada detalle. Si conf&iacute;as en el plan, podemos desplegar en cualquier momento.</p>
-           <p><strong>Snake:</strong> La operaci&oacute;n ser&aacute; el 30/05/2026. Que todos est&eacute;n listos para entonces antes del amanecer. No hay segundas oportunidades.</p>
-           
-        </div>
+           <p><strong>Miller:</strong> Snake, tengo aquí el informe final del pelot&oacute;n que se desplegar&aacute; para rescatar a Arturo que tiene informacion importante para el desarrollo de una mejor caja de carton.</p>
+           <p><strong>Snake:</strong> Mmmm...</p>
+          					<p><strong>Snake:</strong> ¿D&oacute;nde lo tienen retenido?</p>
+          					<p><strong>Miller:</strong> En unas instalaciones de m&aacute;xima seguridad en el Parque Bicentenario. Las coordenadas de inserci&oacute;n ya est&aacute;n en tu radar, pero la vigilancia es extrema.</p>
+          					<p><strong>Snake:</strong> ¿Quienes van? </p>
+           <p> <strong>Miller:</strong> Liderar&aacute; la unidad Valeria. Le acompa&ntilde;an Camila, Chipi y Carlitos.</p>
+           <p><strong>Snake:</strong> Valeria conoce el terreno, lo acepto. ¿Alguna novedad en el grupo?</p>
+           <p><strong>Miller:</strong> Dos operarios m&aacute;s se suman al equipo: Alejandra y Gonzalo</p>
+           <p><strong>Snake:</strong> Seis en total. Necesito garantizar que no haya filtraciones ni errores de comunicaci&oacute;n.</p>
+           <p><strong>Miller:</strong> Est&aacute;n revisando cada detalle. Si conf&iacute;as en el plan, podemos desplegar en cualquier momento.</p>
+          <p><strong>Snake:</strong> La operaci&oacute;n ser&aacute; el 30/05/2026. Que todos est&eacute;n listos para entonces antes del amanecer. No hay segundas oportunidades.</p>
+					 <p><strong>Snake:</strong> La operaci&oacute;n ser&aacute; el 30/05/2026. Que todos est&eacute;n listos para entonces antes del amanecer. No hay segundas oportunidades.</p>
+         </div>
       </div>
       <div id="notes" style="display: none"></div>
     </div>
@@ -780,9 +815,37 @@
             }
           }, 50);
 
-          setTimeout(function () {
-            initMgsCodec();
-          }, 200);
+           setTimeout(function () {
+             initMgsCodec();
+
+              // Listen for when the codec transcription finishes
+              var codecEl = document.getElementById('mgs-codec');
+              if (codecEl) {
+                codecEl.addEventListener('codecthislastaudio', function() {
+                  // Hide the codec screen and show birthday overlay
+                  document.querySelector('.container-fluid').style.display = 'none';
+                  document.getElementById('birthdayOverlay').classList.remove('hidden');
+                  
+                  // Play birthday audio
+                  var birthdayAudio = document.getElementById('birthday-audio');
+                  if (birthdayAudio) {
+                    birthdayAudio.currentTime = 0;
+                    birthdayAudio.play().catch(function(error) {
+                      console.log("Error playing birthday audio:", error);
+                    });
+                  }
+                  
+                  // Add return button functionality
+                  var returnBtn = document.getElementById('returnBtn');
+                  if (returnBtn) {
+                    returnBtn.addEventListener('click', function() {
+                      // Reload the page to go back to the beginning
+                      location.reload();
+                    });
+                  }
+                });
+              }
+           }, 200);
         }
 
         callScreen.addEventListener("click", onCallScreenActivate);
