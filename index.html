@@ -1,0 +1,793 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Metal Gear Codec: A simple implementation of the Metal Gear Solid codec,
+      in SVG and JS.
+    </title>
+    <style type="text/css">
+      * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: #091a17;
+        font-family: "Helvetica", "Arial", sans-serif;
+        color: #fff;
+        font-size: 12px;
+        margin: 0;
+        padding: 10px;
+      }
+
+      .orientation-warning {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #091a17;
+        z-index: 9999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .orientation-warning.active {
+        display: flex;
+      }
+
+      .rotate-icon {
+        width: 200px;
+        height: 200px;
+        border: 5px solid #a6d7b2;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: rotate-animation 2s infinite;
+      }
+
+      @keyframes rotate-animation {
+        0% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(90deg);
+        }
+        100% {
+          transform: rotate(90deg);
+        }
+      }
+
+      .rotate-icon svg {
+        width: 150px;
+        height: 150px;
+        stroke: #a6d7b2;
+        stroke-width: 2;
+        fill: none;
+      }
+
+      .orientation-text {
+        color: #a6d7b2;
+        font-size: 40px;
+        text-align: center;
+        max-width: 90%;
+        font-weight: bold;
+        line-height: 1.4;
+      }
+
+      .call-screen {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000 url(call-screen.png) center/contain no-repeat;
+        z-index: 9998;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        animation: call-fade 2s infinite;
+      }
+
+      .call-screen.hidden {
+        display: none;
+      }
+
+      @keyframes call-fade {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        75%,
+        100% {
+          opacity: 0.5;
+        }
+      }
+
+      .intro-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #091a17;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: opacity 0.5s ease;
+      }
+
+      .intro-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .intro-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        animation: pulse-light 2s infinite;
+      }
+
+      @keyframes pulse-light {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        75%,
+        100% {
+          opacity: 0.5;
+        }
+      }
+
+      .intro-text {
+        color: #a6d7b2;
+        font-size: 62px;
+        font-weight: bold;
+        letter-spacing: 12px;
+        margin: 0;
+      }
+
+      .intro-subtext {
+        color: #30544f;
+        font-size: 60px;
+        font-weight: bold;
+        letter-spacing: 28px;
+        margin: 0;
+      }
+
+      .intro-mission {
+        color: #a6d7b2;
+        font-size: 48px;
+        font-weight: bold;
+        letter-spacing: 6px;
+        margin: 0;
+        text-align: center;
+        margin-top: 25px;
+      }
+
+      .intro-date {
+        color: #30544f;
+        font-size: 36px;
+        letter-spacing: 8px;
+        margin: 0;
+        margin-top: 10px;
+      }
+
+      .intro-prompt {
+        margin-top: 50px;
+        color: #a6d7b2;
+        font-size: 40px;
+        letter-spacing: 6px;
+        animation: blink 1.2s infinite;
+      }
+
+      .intro-subtext {
+        color: #30544f;
+        font-size: 50px;
+        font-weight: bold;
+        letter-spacing: 15px;
+        margin: 0;
+      }
+
+       .intro-prompt {
+         margin-top: 40px;
+         color: #a6d7b2;
+         font-size: 40px;
+         letter-spacing: 4px;
+         animation: blink 1.2s infinite;
+       }
+
+       .discreet-prompt {
+         color: #a6d7b2;
+         font-size: 24px;
+         letter-spacing: 2px;
+         margin-top: 10px;
+       }
+
+       @keyframes blink {
+         0%,
+         100% {
+           opacity: 1;
+         }
+         50% {
+           opacity: 0.3;
+         }
+       }
+
+       .codec-discreet-prompt {
+         color: #a6d7b2;
+         font-size: 18px;
+         letter-spacing: 1px;
+         margin-top: 20px;
+         text-align: center;
+         opacity: 0.7;
+         font-style: italic;
+				        animation: blink 1.2s infinite;
+       }
+
+      .intro-mission {
+        color: #a6d7b2;
+        font-size: 40px;
+        font-weight: bold;
+        letter-spacing: 3px;
+        margin: 0;
+        text-align: center;
+      }
+
+      .intro-date {
+        color: #30544f;
+        font-size: 30px;
+        letter-spacing: 4px;
+        margin: 0;
+      }
+
+      @media (max-width: 768px) and (orientation: landscape) {
+        .intro-subtext {
+          font-size: 24px;
+          letter-spacing: 10px;
+        }
+        .intro-prompt {
+          font-size: 16px;
+          letter-spacing: 3px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .intro-text {
+          font-size: 32px;
+          letter-spacing: 5px;
+        }
+        .intro-subtext {
+          font-size: 20px;
+          letter-spacing: 8px;
+        }
+        .intro-prompt {
+          font-size: 14px;
+          letter-spacing: 2px;
+          margin-top: 30px;
+        }
+      }
+
+      .call-title {
+        display: none;
+      }
+
+      .call-instruction {
+        display: none;
+      }
+
+      .container-fluid {
+        width: 100%;
+        max-width: 702px;
+        margin: 0 auto;
+      }
+      #mgs-codec {
+        background: transparent url(mgs-codec-container.svg) no-repeat 0 0;
+        background-size: contain;
+        background-position: center;
+        width: 100%;
+        max-width: 702px;
+        height: auto;
+        aspect-ratio: 702 / 448;
+        margin: 1em auto;
+        position: relative;
+        z-index: 100;
+        opacity: 0;
+      }
+      #mgs-code svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #mgs-codec audio {
+        display: none;
+        visibility: hidden;
+      }
+      #mgs-codec .img-left,
+      #mgs-codec .img-right,
+      #mgs-codec .left-cover,
+      #mgs-codec .right-cover {
+        position: absolute;
+        z-index: 9;
+        width: 140px;
+        height: 180px;
+        border: 1px solid #a6d7b2;
+        top: 25px;
+      }
+      #mgs-codec .actor-overlay {
+        background-color: #a6d7b2;
+        opacity: 0.3;
+        z-index: 99;
+      }
+      #mgs-codec .left-cover,
+      #mgs-codec .right-cover {
+        z-index: 1000;
+        opacity: 0.1;
+      }
+      #mgs-codec .img-left,
+      #mgs-codec .left-cover {
+        left: 50px;
+      }
+      #mgs-codec .img-right,
+      #mgs-codec .right-cover {
+        right: 50px;
+      }
+      #mgs-codec .transcription {
+        font-size: 16px;
+        position: absolute;
+        bottom: 10px;
+        left: 36px;
+        height: 42%;
+        z-index: 100;
+        width: 90%;
+      }
+      #mgs-codec .transcription p {
+        white-space: pre-line;
+        text-overflow: ellipsis;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      #svg-volume-indicator,
+      #svg-volume-indicator-total {
+        background-size: cover;
+        height: 134px;
+        width: 227px;
+        position: absolute;
+        top: 44px;
+        left: 239px;
+        z-index: 99;
+      }
+      #svg-volume-indicator {
+        background: transparent url(codec-volume-bg.svg) no-repeat 0 0;
+        z-index: 96;
+      }
+      #svg-volume-indicator-total {
+        background: transparent url(codec-volume-bg-total.svg) no-repeat 0 0;
+        z-index: 97;
+      }
+      #svg-volume-indicator,
+      #svg-volume-indicator-total {
+        bottom: 255px;
+        background-size: cover;
+        left: 239px;
+      }
+      code {
+        color: #a6d7b2;
+        background-color: black;
+      }
+      .btn-primary {
+        background-color: #091a17;
+        border-color: #30544f;
+        border-radius: 0;
+        border-width: 2px;
+      }
+      .btn-primary:hover {
+        background-color: #a6d7b2;
+        border-color: #a6d7b2;
+        color: #30544f;
+      }
+      a {
+        color: #30544f;
+      }
+      a:hover {
+        color: #a6d7b2;
+      }
+
+      @media (max-width: 768px) and (orientation: landscape) {
+        .call-title {
+          padding: 25px 50px;
+          font-size: 60px;
+          letter-spacing: 10px;
+        }
+
+        .call-instruction {
+          font-size: 32px;
+          letter-spacing: 4px;
+        }
+
+        .intro-text {
+          font-size: 62px;
+          letter-spacing: 12px;
+        }
+        .intro-subtext {
+          font-size: 52px;
+          letter-spacing: 22px;
+        }
+        .intro-mission {
+          font-size: 34px;
+          letter-spacing: 5px;
+          margin-top: 20px;
+        }
+        .intro-date {
+          font-size: 26px;
+          letter-spacing: 6px;
+          margin-top: 8px;
+        }
+        .intro-prompt {
+          font-size: 28px;
+          letter-spacing: 5px;
+          margin-top: 40px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .call-title {
+          padding: 20px 40px;
+          font-size: 48px;
+          letter-spacing: 8px;
+        }
+
+        .call-instruction {
+          font-size: 24px;
+          letter-spacing: 3px;
+        }
+
+        .intro-text {
+          font-size: 60px;
+          letter-spacing: 10px;
+        }
+        .intro-subtext {
+          font-size: 44px;
+          letter-spacing: 17px;
+        }
+        .intro-mission {
+          font-size: 30px;
+          letter-spacing: 4px;
+          margin-top: 24px;
+        }
+        .intro-date {
+          font-size: 24px;
+          letter-spacing: 5px;
+          margin-top: 10px;
+        }
+        .intro-prompt {
+          font-size: 26px;
+          letter-spacing: 4px;
+          margin-top: 40px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .call-title {
+          padding: 15px 30px;
+          font-size: 36px;
+          letter-spacing: 6px;
+        }
+
+        .call-instruction {
+          font-size: 18px;
+          letter-spacing: 2px;
+        }
+
+        .intro-text {
+          font-size: 36px;
+          letter-spacing: 7px;
+        }
+        .intro-subtext {
+          font-size: 32px;
+          letter-spacing: 12px;
+        }
+        .intro-mission {
+          font-size: 22px;
+          letter-spacing: 3px;
+          margin-top: 20px;
+        }
+        .intro-date {
+          font-size: 18px;
+          letter-spacing: 4px;
+          margin-top: 8px;
+        }
+        .intro-prompt {
+          font-size: 20px;
+          letter-spacing: 3px;
+          margin-top: 35px;
+        }
+      }
+
+      @media (max-width: 768px) and (orientation: portrait) {
+        .orientation-warning {
+          display: flex;
+        }
+
+        .container-fluid {
+          display: none;
+        }
+      }
+
+      @media (max-width: 768px) and (orientation: landscape) {
+        .orientation-warning {
+          display: none;
+        }
+
+        body {
+          padding: 5px;
+        }
+
+        .container-fluid {
+          display: block;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 6px;
+        }
+        #mgs-codec .img-left,
+        #mgs-codec .img-right,
+        #mgs-codec .left-cover,
+        #mgs-codec .right-cover {
+          width: 80px;
+          height: 100px;
+          top: 15px;
+        }
+        #mgs-codec .img-left,
+        #mgs-codec .left-cover {
+          left: 20px;
+        }
+        #mgs-codec .img-right,
+        #mgs-codec .right-cover {
+          right: 20px;
+        }
+        #mgs-codec .transcription {
+          font-size: 10px;
+          bottom: 5px;
+          left: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="intro-overlay" id="introOverlay">
+       <div class="intro-content">
+         <p class="intro-mission">MISI&Oacute;N: RESCATAR A ARTURO</p>
+         <p class="intro-date">FECHA: 30/05/2026</p>
+         <p class="intro-prompt">HAZ CLIC PARA CONTINUAR</p>
+       </div>
+    </div>
+
+    <div class="call-screen hidden" id="callScreen"></div>
+
+    <audio id="codec-audio" style="display: none" loop preload="auto">
+      <source src="codec.mp3" type="audio/mpeg" />
+    </audio>
+
+    <audio id="codec-open-ringtone" style="display: none" preload="auto">
+      <source src="mgs-codec-open-ringtone.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="orientation-warning" id="orientationWarning">
+      <div class="rotate-icon">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="10" width="60" height="80" rx="8" />
+          <circle cx="50" cy="80" r="3" />
+          <path
+            d="M 35 35 L 50 50 L 65 35"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <div class="orientation-text">
+        Gira tu dispositivo al modo horizontal para poder continuar
+      </div>
+    </div>
+
+    <div class="container-fluid" style="display: none">
+      <div id="mgs-codec">
+												<p class="codec-discreet-prompt">haz click para avanzar en la conversacion</p>
+        <div id="svg-volume-indicator-total"></div>
+        <div id="svg-volume-indicator"></div>
+
+        <div class="actor-overlay img-left"></div>
+        <img src="fuzzy.gif" class="left-cover" alt="fuzzy animation" />
+        <img
+          src="kaz.webp"
+          alt="actor 1"
+          class="img-left"
+        />
+        <img src="fuzzy.gif" class="right-cover" alt="fuzzy animation" />
+        <div class="actor-overlay img-right"></div>
+				<img src="metal-gear-solid-delta-radio-header.avif" alt="Snake" class="img-right">
+
+        <div class="transcription">
+          <p><strong>Miller:</strong> Snake, tengo aquí el informe final del pelot&oacute;n que se desplegar&aacute; para rescatar a Arturo que tiene informacion importante para el desarrollo de una mejor caja de carton.</p>
+          <p><strong>Snake:</strong> Mmmm...</p>
+					<p><strong>Snake:</strong> ¿D&oacute;nde lo tienen retenido?</p>
+					<p><strong>Miller:</strong> En unas instalaciones de m&aacute;xima seguridad en el Parque Bicentenario. Las coordenadas de inserci&oacute;n ya est&aacute;n en tu radar, pero la vigilancia es extrema.</p>
+					<p><strong>Snake:</strong> ¿Quienes van? </p>
+          <p> <strong>Miller:</strong> Liderar&aacute; la unidad Valeria. Le acompa&ntilde;an Camila, Chipi y Carlitos.</p>
+          <p><strong>Snake:</strong> Valeria conoce el terreno, lo acepto. ¿Alguna novedad en el grupo?</p>
+          <p><strong>Miller:</strong> Dos operarios m&aacute;s se suman al equipo: Alejandra y Gonzalo</p>
+          <p><strong>Snake:</strong> Seis en total. Necesito garantizar que no haya filtraciones ni errores de comunicaci&oacute;n.</p>
+          <p><strong>Miller:</strong> Est&aacute;n revisando cada detalle. Si conf&iacute;as en el plan, podemos desplegar en cualquier momento.</p>
+           <p><strong>Snake:</strong> La operaci&oacute;n ser&aacute; el 30/05/2026. Que todos est&eacute;n listos para entonces antes del amanecer. No hay segundas oportunidades.</p>
+           
+        </div>
+      </div>
+      <div id="notes" style="display: none"></div>
+    </div>
+
+    <script>
+      var codecShown = false;
+      var audioStarted = false;
+      var codecInitialized = false;
+
+      function checkOrientation() {
+        var warning = document.getElementById("orientationWarning");
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var isPortrait = height > width;
+
+        var isTouchDevice = () => {
+          return (
+            "ontouchstart" in window ||
+            navigator.maxTouchPoints > 0 ||
+            navigator.msMaxTouchPoints > 0
+          );
+        };
+
+        var isSmallDevice = width <= 1024;
+        var isPortraitMode = isPortrait;
+
+        console.log(
+          "Orientation check - Width: " +
+            width +
+            ", Height: " +
+            height +
+            ", Portrait: " +
+            isPortrait +
+            ", SmallDevice: " +
+            isSmallDevice +
+            ", TouchDevice: " +
+            isTouchDevice(),
+        );
+
+        if (isSmallDevice && isPortraitMode && isTouchDevice()) {
+          warning.classList.add("active");
+          console.log("Showing orientation warning");
+        } else {
+          warning.classList.remove("active");
+          console.log("Hiding orientation warning");
+        }
+      }
+
+      function showCodec() {
+        if (codecShown) return;
+        codecShown = true;
+
+        var callScreen = document.getElementById("callScreen");
+        var container = document.querySelector(".container-fluid");
+
+        callScreen.classList.add("hidden");
+        callScreen.style.pointerEvents = "none";
+        if (container) {
+          container.style.display = "block";
+        }
+      }
+
+      window.addEventListener("orientationchange", function () {
+        console.log("Orientation changed event fired");
+        checkOrientation();
+      });
+      window.addEventListener("resize", checkOrientation);
+
+      setInterval(checkOrientation, 500);
+
+      document.addEventListener("DOMContentLoaded", function () {
+        checkOrientation();
+
+        var introOverlay = document.getElementById("introOverlay");
+        var callScreen = document.getElementById("callScreen");
+        var audio = document.getElementById("codec-audio");
+
+        // Función para iniciar el audio del codec
+        function startCodecAudio() {
+          if (!audio || audioStarted) return;
+          audioStarted = true;
+          audio.currentTime = 0;
+          var playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .catch(function (error) {
+                console.log("[v0] Audio autoplay error:", error);
+              })
+              .then(function () {
+                console.log("[v0] Audio started playing");
+              });
+          }
+        }
+
+        // Fase 1: click en introducción -> ocultar intro y mostrar call screen + audio
+        introOverlay.addEventListener(
+          "click",
+          function () {
+            introOverlay.classList.add("hidden");
+
+            setTimeout(function () {
+              callScreen.classList.remove("hidden");
+              startCodecAudio();
+            }, 500);
+          },
+          { once: true },
+        );
+
+        introOverlay.addEventListener(
+          "touchend",
+          function (e) {
+            e.preventDefault();
+            introOverlay.classList.add("hidden");
+
+            setTimeout(function () {
+              callScreen.classList.remove("hidden");
+              startCodecAudio();
+            }, 500);
+          },
+          { once: true },
+        );
+
+        function onCallScreenActivate(e) {
+          e.stopImmediatePropagation();
+          if (codecInitialized) return;
+          codecInitialized = true;
+
+          if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+            audioStarted = false;
+          }
+
+          showCodec();
+
+          setTimeout(function () {
+            // Ringtone de apertura del codec
+            var ringtone = document.getElementById("codec-open-ringtone");
+            if (ringtone) {
+              ringtone.currentTime = 0;
+              var rp = ringtone.play();
+              if (rp !== undefined) rp.catch(function () {});
+            }
+          }, 50);
+
+          setTimeout(function () {
+            initMgsCodec();
+          }, 200);
+        }
+
+        callScreen.addEventListener("click", onCallScreenActivate);
+      });
+    </script>
+    <script src="mgs-player.js"></script>
+  </body>
+</html>

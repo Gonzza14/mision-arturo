@@ -1,0 +1,15 @@
+{
+  "name": "metal-gear-codec",
+  "version": "1.0.0",
+  "description": "Metal Gear Solid Codec Player - Interactive codec conversations",
+  "scripts": {
+    "dev": "http-server -a 0.0.0.0 -p 3000 -c-1",
+    "start": "http-server -a 0.0.0.0 -p 3000 -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {
+    "jquery": "^4.0.0"
+  }
+}
