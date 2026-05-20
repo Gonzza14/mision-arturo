@@ -2,9 +2,9 @@
 <html>
   <head>
     <title>
-      Metal Gear Codec: A simple implementation of the Metal Gear Solid codec,
-      in SVG and JS.
+			Misi&oacute;n: Rescatar a Arturo
     </title>
+		 <meta name="viewport" content="user-scalable=no">
     <style type="text/css">
       * {
         -moz-box-sizing: border-box;
@@ -79,21 +79,21 @@
         line-height: 1.4;
       }
 
-      .call-screen {
-        display: flex;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #000 url(call-screen.png) center/contain no-repeat;
-        z-index: 9998;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        animation: call-fade 2s infinite;
-      }
+	.call-screen {
+		display: flex;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: #000 url(call-screen.png) center/contain no-repeat;
+		z-index: 9998;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		animation: call-fade 2s infinite;
+	}
 
       .call-screen.hidden {
         display: none;
@@ -238,7 +238,7 @@
 
       .intro-mission {
         color: #a6d7b2;
-        font-size: 40px;
+        font-size: 50px;
         font-weight: bold;
         letter-spacing: 3px;
         margin: 0;
@@ -247,7 +247,7 @@
 
       .intro-date {
         color: #30544f;
-        font-size: 30px;
+        font-size: 40px;
         letter-spacing: 4px;
         margin: 0;
       }
@@ -314,18 +314,19 @@
         display: none;
         visibility: hidden;
       }
-      #mgs-codec .img-left,
-      #mgs-codec .img-right,
-      #mgs-codec .left-cover,
-      #mgs-codec .right-cover {
-        position: absolute;
-        z-index: 9;
-        width: 140px;
-        height: 180px;
-        border: 1px solid #a6d7b2;
-        top: 25px;
-      }
-      #mgs-codec .actor-overlay {
+#mgs-codec .img-left,
+#mgs-codec .img-right,
+#mgs-codec .left-cover,
+#mgs-codec .right-cover {
+	position: absolute;
+	z-index: 9;
+	width: 140px;
+	height: 180px;
+	border: 1px solid #a6d7b2;
+	top: 25px;
+	pointer-events: none;
+}
+#mgs-codec .actor-overlay {
         background-color: #a6d7b2;
         opacity: 0.3;
         z-index: 99;
@@ -343,22 +344,28 @@
       #mgs-codec .right-cover {
         right: 50px;
       }
-      #mgs-codec .transcription {
-        font-size: 16px;
-        position: absolute;
-        bottom: 10px;
-        left: 36px;
-        height: 42%;
-        z-index: 100;
-        width: 90%;
-      }
-      #mgs-codec .transcription p {
-        white-space: pre-line;
-        text-overflow: ellipsis;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
+       #mgs-codec .transcription {
+         font-size: 24px;
+         font-family: "Helvetica", "Arial", sans-serif;
+         color: #a6d7b2;
+         position: absolute;
+         bottom: 10px;
+         left: 36px;
+         height: 37%;
+         z-index: 100;
+         width: 90%;
+       }
+       #mgs-codec .transcription p {
+         white-space: pre-line;
+         text-overflow: ellipsis;
+         position: absolute;
+         top: 0;
+         left: 0;
+         font-family: "Helvetica", "Arial", sans-serif;
+         color: #a6d7b2;
+         letter-spacing: 1px;
+         margin: 0;
+       }
       #svg-volume-indicator,
       #svg-volume-indicator-total {
         background-size: cover;
@@ -426,7 +433,7 @@
           letter-spacing: 22px;
         }
         .intro-mission {
-          font-size: 34px;
+          font-size: 50px;
           letter-spacing: 5px;
           margin-top: 20px;
         }
@@ -463,7 +470,7 @@
           letter-spacing: 17px;
         }
         .intro-mission {
-          font-size: 30px;
+          font-size: 50px;
           letter-spacing: 4px;
           margin-top: 24px;
         }
@@ -500,7 +507,7 @@
           letter-spacing: 12px;
         }
         .intro-mission {
-          font-size: 22px;
+          font-size: 40px;
           letter-spacing: 3px;
           margin-top: 20px;
         }
@@ -657,17 +664,17 @@
 				<img src="metal-gear-solid-delta-radio-header.avif" alt="Snake" class="img-right">
 
         <div class="transcription">
-           <p><strong>Miller:</strong> Snake, tengo aquí el informe final del pelot&oacute;n que se desplegar&aacute; para rescatar a Arturo que tiene informacion importante para el desarrollo de una mejor caja de carton.</p>
+<p><strong>Miller:</strong> Snake, revisa el informe de la unidad de rescate. Tenemos que sacar a Arturo de ahí. Lleva consigo informaci&oacute;n cr&iacute;tica para el Proyecto Definitivo... el desarrollo de la mejor caja de cart&oacute;n de la historia.</p>
            <p><strong>Snake:</strong> Mmmm...</p>
           					<p><strong>Snake:</strong> ¿D&oacute;nde lo tienen retenido?</p>
           					<p><strong>Miller:</strong> En unas instalaciones de m&aacute;xima seguridad en el Parque Bicentenario. Las coordenadas de inserci&oacute;n ya est&aacute;n en tu radar, pero la vigilancia es extrema.</p>
           					<p><strong>Snake:</strong> ¿Quienes van? </p>
-           <p> <strong>Miller:</strong> Liderar&aacute; la unidad Valeria. Le acompa&ntilde;an Camila, Chipi y Carlitos.</p>
+           <p> <strong>Miller:</strong> Liderar&aacute; la unidad Valeria. Le acompa&ntilde;an Camila, Chipi, Carlitos, Cris, Alejandra, Gonzalo y William.</p>
            <p><strong>Snake:</strong> Valeria conoce el terreno, lo acepto. ¿Alguna novedad en el grupo?</p>
-           <p><strong>Miller:</strong> Dos operarios m&aacute;s se suman al equipo: Alejandra y Gonzalo</p>
-           <p><strong>Snake:</strong> Seis en total. Necesito garantizar que no haya filtraciones ni errores de comunicaci&oacute;n.</p>
+           <p><strong>Miller:</strong> Dos operarios m&aacute;s se suman al equipo: Karlita y Lenny</p>
+           <p><strong>Snake:</strong> Diez en total. Necesito garantizar que no haya filtraciones ni errores de comunicaci&oacute;n.</p>
            <p><strong>Miller:</strong> Est&aacute;n revisando cada detalle. Si conf&iacute;as en el plan, podemos desplegar en cualquier momento.</p>
-          <p><strong>Snake:</strong> La operaci&oacute;n ser&aacute; el 30/05/2026. Que todos est&eacute;n listos para entonces antes del amanecer. No hay segundas oportunidades.</p>
+          <p><strong>Snake:</strong> La operaci&oacute;n ser&aacute; el 30/05/2026. Que todos est&eacute;n listos para entonces. No hay segundas oportunidades.</p>
 					 <p><strong>Snake:</strong> La operaci&oacute;n ser&aacute; el 30/05/2026. Que todos est&eacute;n listos para entonces antes del amanecer. No hay segundas oportunidades.</p>
          </div>
       </div>
@@ -848,7 +855,11 @@
            }, 200);
         }
 
-        callScreen.addEventListener("click", onCallScreenActivate);
+         callScreen.addEventListener("click", onCallScreenActivate);
+        callScreen.addEventListener("touchend", function(e) {
+          e.preventDefault();
+          onCallScreenActivate(e);
+        });
       });
     </script>
     <script src="mgs-player.js"></script>

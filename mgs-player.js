@@ -97,10 +97,14 @@ var imgEls = codecEl.querySelectorAll('img.img-left, img.img-right');
 			current_note = 1;
 		}
 
-		// Add click listener
-		codecEl.addEventListener('click', triggerClick);
+	// Add click listeners
+	codecEl.addEventListener('click', triggerClick);
+	document.addEventListener('click', function(e) {
+		if (e.target.closest('#mgs-codec')) return;
+		triggerClick();
+	}, true);
 
-		// Start animating the volume indicator
+	// Start animating the volume indicator
 		setTimeout(function(){
 			setInterval(animateCodecBar, opts.interval_speed);
 		}, opts.animation_timeout);
